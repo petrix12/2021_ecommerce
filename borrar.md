@@ -1,9 +1,4 @@
 
-### Video 2. Instalación de un nuevo proyecto
-
-
-
-
 
 ### Video 3. Extensiones de VSC
 ##### Recomendaciones de algunas extensiones para VSC.
