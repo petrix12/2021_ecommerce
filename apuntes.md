@@ -26,16 +26,39 @@
     + [Visual Studio Code](https://code.visualstudio.com)
     + [Node Js](https://nodejs.org/es)
     + [Workbench](https://dev.mysql.com/downloads/workbench)
-        #### Opción emergente: (https://www.malavida.com/es/soft/mysql-workbench/#gref)
+        + [Opción emergente](https://www.malavida.com/es/soft/mysql-workbench/#gref)
 2. Commit Video 001:
     + $ git add .
     + $ git commit -m "Video 001: Programas necesarios"
     + $ git push -u origin main
 
 ### Video 002. Instalación de un nuevo proyecto
-
-
-
+1. Crear proyecto **2021_ecommerce**:
+    + $ laravel new 2021_ecommerce --jet
+    + Seleccionar **livewire**.
+    + No trabajaremos con equipos:
+        - Will your application use teams? (yes/no) [no]: no
+2. Instalar Node Package Manager y compilar sus dependencias:
+    + $ npm install
+    + $ npm run dev
+3. Crear un dominio local: **2021_ecommerce.test**.
+    + [Guía de Coders Free para crear un dominio local](https://codersfree.com/blog/como-generar-un-dominio-local-en-windows-xampp)
+4. Crear base de datos **laravel_ecommerce** en MySQL.
+5. Hacer coincidir los parámetros de base de datos y de dominio del proyecto en **.env** en caso de ser necesario:
+    ```env
+    APP_NAME="Sefar Ecommerce"
+    ≡
+    APP_URL=http://2021_ecommerce.test
+    ≡
+    DB_DATABASE=laravel_ecommerce
+    ≡
+    ```
+6. Ejecutar migraciones:
+    + $ php artisan migrate
+7. Commit Video 002:
+    + $ git add .
+    + $ git commit -m "Video 002: Instalación de un nuevo proyecto"
+    + $ git push -u origin main
 
 ### Video 003. Extensiones de VSC
 
