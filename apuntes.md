@@ -15,14 +15,31 @@
     + $ git remote add origin https://github.com/petrix12/2021_ecommerce.git
     + $ git push -u origin main
 
-## Contenido del curso
+## Sección 01: Introducción
 
-### Video 01. Vista Previa
-+ **Contenido**: Presentación de la aplicación a desarrollar.
-1. Commit Video 001:
+### Video 001. Programas necesarios
+1. Páginas principales:
+	+ [Laravel](https://laravel.com)
+	+ [XAMPP](https://www.apachefriends.org/es/index.html)
+	+ [Composer](https://getcomposer.org)
+	+ [Git](https://git-scm.com)
+    + [Visual Studio Code](https://code.visualstudio.com)
+    + [Node Js](https://nodejs.org/es)
+    + [Workbench](https://dev.mysql.com/downloads/workbench)
+        #### Opción emergente: (https://www.malavida.com/es/soft/mysql-workbench/#gref)
+2. Commit Video 001:
     + $ git add .
-    + $ git commit -m "Commit 01: Vista Previa"
+    + $ git commit -m "Video 001: Programas necesarios"
     + $ git push -u origin main
+
+### Video 002. Instalación de un nuevo proyecto
+
+
+
+
+### Video 003. Extensiones de VSC
+
+
 
 ### Nota 02. Proyecto en github
 1. **Nota del autor**:
