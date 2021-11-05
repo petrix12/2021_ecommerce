@@ -133,6 +133,51 @@
     + $ git push -u origin main
 
 ### Video 005. Maquetación de la BBDD 2
+1. Entidades:
+    + **users**:
+        + id (INT)
+        + name (VARCHAR)
+        + email (VARCHAR)
+        + password (VARCHAR)
+    + **orders**:
+        + id (INT)
+        + status (VARCHAR)
+        + envio_type (VARCHAR)
+        + shippong_cost (VARCHAR)
+        + total (VARCHAR)
+    + **envio**:
+        + id (INT)
+    + **departments**:
+        + id (INT)
+        + name (VARCHAR)
+    + **cities**:
+        + id (INT)
+        + name (VARCHAR)
+    + **districts**:
+        + id (INT)
+        + name (VARCHAR)
+    + **items**:
+        + id (INT)
+        + name (VARCHAR)
+        + qty (VARCHAR)
+        + price (VARCHAR)
+        + image (VARCHAR)
+        + color (VARCHAR)
+        + size (VARCHAR)
+2. Relaciones:
+    + **1:n - users : orders**
+    + **1:n - orders : envio**
+    + **1:n - orders : items**
+    + **1:n - departments : envio**
+    + **1:n - cities : envio**
+    + **1:n - cities : districts**
+    + **1:n - departments : cities**
+    + **1:n - districts : envio**
+3. Commit Video 005:
+    + $ git add .
+    + $ git commit -m "Video 005. Maquetación de la BBDD 2"
+    + $ git push -u origin main
+
 ### Video 006. Modelo físico
 ### Video 007. Generar relaciones Eloquent
 
