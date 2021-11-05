@@ -179,12 +179,223 @@
     + $ git push -u origin main
 
 ### Video 006. Modelo físico
++ [Relaciones Avanzadas](https://www.youtube.com/watch?v=BNYDrxxkd1k&list=PLZ2ovOgdI-kXnKTRhERhJjWtkKeAfMFbi)
++ [Migraciones Laravel](https://www.youtube.com/watch?v=C91FOKq7v-k)
++ [Seeders en Laravel](https://www.youtube.com/watch?v=zNTF3U2Hsq0)
++ [Factory's en Laravel](https://www.youtube.com/watch?v=lLyWpWA8J0s)
+1. Crear el modelo **Category** con migración y seeder:
+    + $ php artisan make:model Category -ms
+2. Establecer los campos de la migración **database\migrations\2021_11_05_131053_create_categories_table.php** en le método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug');
+            $table->string('image');
+            $table->string('icon');
+            $table->timestamps();
+        });
+    }
+    ```
+3. Habiliar la asignación masiva en el modelo **app\Models\Category.php**:
+    ```php
+    protected $fillable = [
+        'name',
+        'slug',
+        'image',
+        'icon'
+    ];
+    ```
+4. Crear el modelo **Subcategory** con migración y seeder:
+    + $ php artisan make:model Subcategory -ms
+5. Establecer los campos de la migración **database\migrations\2021_11_05_132351_create_subcategories_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('subcategories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug');
+            $table->string('image');
+            $table->boolean('color')->default(false);
+            $table->boolean('size')->default(false);
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+            $table->timestamps();
+        });
+    }
+    ```
+6. Habiliar la asignación masiva en el modelo **app\Models\Subcategory.php**:
+    ```php
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+    ```
+7. Crear el modelo **Brand** con migración, seeder y factory:
+    + $ php artisan make:model Brand -msf
+8. Establecer los campos de la migración **database\migrations\2021_11_05_140409_create_brands_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('brands', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+    }
+    ```
+9. Habiliar la asignación en el modelo **app\Models\Brand.php**:
+    ```php
+    protected $fillable = [
+        'name'
+    ];
+    ```
+10. Crear la migración de la tabla pivote **brand_category**:
+    + $ php artisan make:migration create_brand_category_table
+11. Establecer los campos de la migración **database\migrations\2021_11_05_141358_create_brand_category_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('brand_category', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('brand_id');
+            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+            $table->timestamps();
+        });
+    }
+    ```
+12. Crear el modelo **Product** con migración, seeder y factory:
+    + $ php artisan make:model Product -msf
+13. Establecer los campos de la migración **database\migrations\2021_11_05_141627_create_products_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug');
+            $table->text('description');
+            $table->float('price');
+            $table->unsignedBigInteger('subcategory_id');
+            $table->foreign('subcategory_id')->references('id')->on('subcategories');
+            $table->unsignedBigInteger('brand_id');
+            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->integer('quantity')->nullable();
+            $table->enum('status', [Product::BORRADOR, Product::PUBLICADO])->default(Product::BORRADOR);
+            $table->timestamps();
+        });
+    }
+    ```
+    + Importar la definción del modelo **Product**:
+    ```php
+    use App\Models\Product;
+    ```
+14. Habiliar la asignación masiva y definir las constantes de **BORRADOR** y **PUBLICADO** en el modelo **app\Models\Product.php**:
+    ```php
+    const BORRADOR = 1;
+    const PUBLICADO = 2;
+
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+    ```
+15. Crear el modelo **Color** con migración y seeder:
+    + $ php artisan make:model Color -ms
+16. Establecer los campos de la migración **database\migrations\2021_11_05_141737_create_colors_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('colors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+    }
+    ```
+17. Habiliar la asignación masiva en el modelo **app\Models\Color.php**:
+    ```php
+    protected $fillable = [
+        'name'
+    ];
+    ```
+18. Crear la migración de la tabla pivote **color_product**:
+    + $ php artisan make:migration create_color_product_table
+19. Establecer los campos de la migración **database\migrations\2021_11_05_142744_create_color_product_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('color_product', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('color_id');
+            $table->foreign('color_id')->references('id')->on('colors');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->integer('quantity');
+            $table->timestamps();
+        });
+    }
+    ```
+20. Crear el modelo **Size** con migración y factory:
+    + $ php artisan make:model Size -mf
+21. Establecer los campos de la migración **database\migrations\2021_11_05_143210_create_sizes_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('sizes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->timestamps();
+        });
+    }
+    ```
+22. Habiliar la asignación masiva en el modelo **app\Models\Color.php**:
+    ```php
+    protected $fillable = [
+        'name',
+        'product_id'
+    ];
+    ```
+23. Crear la migración de la tabla pivote **color_size**:
+    + $ php artisan make:migration create_color_size_table
+24. Establecer los campos de la migración **database\migrations\2021_11_05_150720_create_color_size_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('color_size', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('color_id');
+            $table->foreign('color_id')->references('id')->on('colors');
+            $table->unsignedBigInteger('size_id');
+            $table->foreign('size_id')->references('id')->on('sizes');
+            $table->integer('quantity');
+            $table->timestamps();
+        });
+    }
+    ```
+25. Ejecutar las migraciones:
+    + $ php artisan migrate
+26. Commit Video 006:
+    + $ git add .
+    + $ git commit -m "Video 006. Modelo físico"
+    + $ git push -u origin main
+
 ### Video 007. Generar relaciones Eloquent
 
 ## Sección 03: Insertar registros de prueba a la bbdd
 
-
-
+    ≡
+    ```php
+    ```
 
 
 
