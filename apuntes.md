@@ -81,6 +81,62 @@
     + $ git commit -m "Video 003. Extensiones de VSC"
     + $ git push -u origin main
 
+## Sección 02: Diseño de la bbdd
+
+### Video 004. Maquetación de la BBDD 1
+1. Entidades:
+    + **categories**:
+        + id(INT)
+        + name (VARCHAR)
+        + slug (VARCHAR)
+        + image (VARCHAR)
+        + icon (VARCHAR)
+    + **subcategories**:
+        + id (INT)
+        + name (VARCHAR)
+        + slug (VARCHAR)
+        + image (VARCHAR)
+        + color (TINYINT)
+        + size (TINYINT)
+    + **products**:
+        + id(INT)
+        + name (VARCHAR)
+        + slug (VARCHAR)
+        + description (VARCHAR)
+        + price (VARCHAR)
+        + quantity (VARCHAR)
+        + status (VARCHAR)
+    + **brands**:
+        + id(INT)
+        + name (VARCHAR)
+    + **colors**:
+        + id(INT)
+        + name (VARCHAR)
+    + **sizes**:
+        + id(INT)
+        + name (VARCHAR)
+2. Entidades pivote:
+    + **brand_category**
+    + **color_product**
+    + **color_size**
+3. Relaciones:
+    + **n:m - categories : brands**
+    + **n:m - colors : sizes**
+    + **n:m - colors : products**
+    + **1:n - categories : subcategories**
+    + **1:n - subcategories : products**
+    + **1:n - brands : products**
+    + **1:n - products : sizes**
+4. Commit Video 004:
+    + $ git add .
+    + $ git commit -m "Video 004. Maquetación de la BBDD 1"
+    + $ git push -u origin main
+
+### Video 005. Maquetación de la BBDD 2
+### Video 006. Modelo físico
+### Video 007. Generar relaciones Eloquent
+
+## Sección 03: Insertar registros de prueba a la bbdd
 
 
 

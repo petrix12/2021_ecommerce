@@ -1,9 +1,3 @@
-
-
-### Video 3. Extensiones de VSC
-##### Recomendaciones de algunas extensiones para VSC.
-
-
 ## Sección 2: Diseño de la bbdd
 
 
