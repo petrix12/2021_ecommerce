@@ -14,4 +14,14 @@ class Subcategory extends Model
         'created_at',
         'updated_at'
     ];
+
+    // Relación 1:n (subcategories - products)
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
+
+    // Relación 1:n inversa (categories - subcategories)
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

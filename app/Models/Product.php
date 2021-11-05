@@ -17,4 +17,29 @@ class Product extends Model
         'created_at',
         'updated_at'
     ];
+
+    // Relación 1:n (products - sizes)
+    public function sizes(){
+        return $this->hasMany(Size::class);
+    }
+
+    // Relación 1:n inversa (brands - products)
+    public function brand(){
+        return $this->belongsTo(Brand::class);
+    }
+
+    // Relación 1:n inversa (subcategories - products)
+    public function subcategory(){
+        return $this->belongsTo(Subcategory::class);
+    }
+
+    // Relación n:m (products - colors)
+    public function colors(){
+        return $this->belongsToMany(Color::class);
+    }
+
+    // Relación 1:n polimórfica (products - images)
+    public function images(){
+        return $this->morphMany(Image::class, "imageable");
+    }
 }

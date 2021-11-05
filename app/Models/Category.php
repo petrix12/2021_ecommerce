@@ -15,4 +15,19 @@ class Category extends Model
         'image',
         'icon'
     ];
+
+    // Relación 1:n (categories - subcategories)
+    public function subcategories(){
+        return $this->hasMany(Subcategory::class);
+    }
+
+    // Relación n:m (categories - brands)
+    public function brands(){
+        return $this->belongsToMany(Brand::class);
+    }
+
+    // Relación 1:n indirecta (categories - products)
+    public function products(){
+        return $this->hasManyThrough(Product::class, Subcategory::class);
+    }
 }

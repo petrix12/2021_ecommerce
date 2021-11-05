@@ -115,11 +115,17 @@
     + **sizes**:
         + id(INT)
         + name (VARCHAR)
+    + **images**:
+        + id(INT)
+        + url (VARCHAR)
+        + imageable_id (INT)
+        + imageable_type (VARCHAR)
 2. Entidades pivote:
     + **brand_category**
     + **color_product**
     + **color_size**
 3. Relaciones:
+    + **1:n polimórfica - products : images**
     + **n:m - categories : brands**
     + **n:m - colors : sizes**
     + **n:m - colors : products**
@@ -382,14 +388,128 @@
         });
     }
     ```
-25. Ejecutar las migraciones:
+25. Crear el modelo **Image** con migración y factory:
+    + $ php artisan make:model Image -mf
+26. Establecer los campos de la migración **database\migrations\2021_11_05_155037_create_images_table.php** en el método **up**:
+    ```php
+    public function up()
+    {
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
+            $table->string('url');
+            $table->unsignedBigInteger('imageable_id');
+            $table->string('imageable_type');
+            $table->timestamps();
+        });
+    }
+    ```
+27. Habiliar la asignación masiva en el modelo **app\Models\Image.php**:
+    ```php
+    protected $fillable = [
+        'url',
+        'imageable_id',
+        'imageable_type'
+    ];
+    ```
+28. Ejecutar las migraciones:
     + $ php artisan migrate
-26. Commit Video 006:
+29. Commit Video 006:
     + $ git add .
     + $ git commit -m "Video 006. Modelo físico"
     + $ git push -u origin main
 
 ### Video 007. Generar relaciones Eloquent
+1. Definir relaciones en el modelo **app\Models\Category.php**:
+    ```php
+    // Relación 1:n (categories - subcategories)
+    public function subcategories(){
+        return $this->hasMany(Subcategory::class);
+    }
+
+    // Relación n:m (categories - brands)
+    public function brands(){
+        return $this->belongsToMany(Brand::class);
+    }
+
+    // Relación 1:n indirecta (categories - products)
+    public function products(){
+        return $this->hasManyThrough(Product::class, Subcategory::class);
+    }
+    ```
+2. Definir relaciones en el modelo **app\Models\Subcategory.php**:
+    ```php
+    // Relación 1:n (subcategories - products)
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
+
+    // Relación 1:n inversa (categories - subcategories)
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+    ```
+3. Definir relaciones en el modelo **app\Models\Product.php**:
+    ```php
+    // Relación 1:n (products - sizes)
+    public function sizes(){
+        return $this->hasMany(Size::class);
+    }
+
+    // Relación 1:n inversa (brands - products)
+    public function brand(){
+        return $this->belongsTo(Brand::class);
+    }
+
+    // Relación 1:n inversa (subcategories - products)
+    public function subcategory(){
+        return $this->belongsTo(Subcategory::class);
+    }
+
+    // Relación n:m (products - colors)
+    public function colors(){
+        return $this->belongsToMany(Color::class);
+    }
+
+    // Relación 1:n polimórfica (products - images)
+    public function images(){
+        return $this->morphMany(Image::class, "imageable");
+    }
+    ```
+4. Definir relaciones en el modelo **app\Models\Color.php**:
+    ```php
+    // Relación n:m (colors - products)
+    public function products(){
+        return $this->belongsToMany(Product::class);
+    }
+
+    // Relación n:m (colors - sizes)
+    public function sizes(){
+        return $this->belongsToMany(Size::class);
+    }
+    ```
+5. Definir relaciones en el modelo **app\Models\Size.php**:
+    ```php
+    // Relación 1:n inversa (products - sizes)
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
+
+    // Relación n:m (sizes - colors)
+    public function colors(){
+        return $this->belongsToMany(Color::class);
+    }
+    ```
+6. Definir relaciones en el modelo **app\Models\Image.php**:
+    ```php
+    // Relación polimórfica
+    public function imageable(){
+        return $this->morphTo();
+    }
+    ```
+7. Commit Video 007:
+    + $ git add .
+    + $ git commit -m "Video 007. Generar relaciones Eloquent"
+    + $ git push -u origin main
 
 ## Sección 03: Insertar registros de prueba a la bbdd
 
